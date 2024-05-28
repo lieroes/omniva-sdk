@@ -1,0 +1,15 @@
+{
+    "name": "lieroes/omniva-sdk",
+    "autoload": {
+        "psr-4": {
+            "Lieroes\\OmnivaSdk\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Olegs Davidovs",
+            "email": "davidovs.olegs@gmail.com"
+        }
+    ],
+    "require": {}
+}
