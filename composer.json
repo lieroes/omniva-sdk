@@ -11,5 +11,17 @@
             "email": "davidovs.olegs@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.0",
+        "symfony/http-foundation": "^5.0",
+        "monolog/monolog": "^2.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "lieroes\\omniva-sdk\\Providers\\OmnivaServiceProvider"
+            ]
+        }
+    }
 }

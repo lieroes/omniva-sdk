@@ -1,1 +1,29 @@
 # omniva-sdk
+
+    use Lieroes\OmnivaSDK\Application\Services\ShipmentService;
+    use Lieroes\OmnivaSDK\Domain\Entities\Shipment;
+    use Lieroes\OmnivaSDK\Domain\Enums\DeliveryChannel;
+    use Lieroes\OmnivaSDK\Domain\Enums\MainService;
+    use Lieroes\OmnivaSDK\Domain\ValueObjects\Address;
+    use Lieroes\OmnivaSDK\Domain\ValueObjects\CustomerCode;
+    use Lieroes\OmnivaSDK\Infrastructure\Http\OmnivaHttpClient;
+    use Lieroes\OmnivaSDK\Infrastructure\Logging\LoggerFactory;
+    use Lieroes\OmnivaSDK\Infrastructure\Repositories\ShipmentRepository;
+    
+    $logger = LoggerFactory::createLogger('OmnivaSDK');
+
+    $httpClient = new OmnivaHttpClient('8100605', 'W!XT7jwZ2', $logger);
+
+    $shipmentRepository = new ShipmentRepository($httpClient);
+
+    $shipmentService = new ShipmentService($shipmentRepository, $logger);
+
+    $shipment = new Shipment(
+        new CustomerCode('12345'),
+        MainService::PARCEL,
+        DeliveryChannel::PARCEL_MACHINE,
+        new Address('EE', 'Tartu', '51003', 'Ülikooli 2A'),
+        new Address('EE', 'Tartu', '51003', 'Ülikooli 2A')
+    );
+
+    $shipmentService->createShipment($shipment);
