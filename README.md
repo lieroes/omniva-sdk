@@ -15,7 +15,7 @@ https://www.omniva.lv/integrations_with_omniva
     
     $logger = LoggerFactory::createLogger('OmnivaSDK');
 
-    $httpClient = new OmnivaHttpClient('8100605', 'W!XT7jwZ2', $logger);
+    $httpClient = new OmnivaHttpClient('username', 'password', $logger);
 
     $shipmentRepository = new ShipmentRepository($httpClient);
 
