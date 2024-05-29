@@ -17,7 +17,7 @@ class ShipmentRepository implements ShipmentRepositoryInterface
 
     public function createShipment(Shipment $shipment): void
     {
-        $url = 'https://test-omx.omniva.eu/api/v01/omx/shipments/business-to-client';
+        $url = 'https://omx.omniva.eu/api/v01/omx/shipments/business-to-client';
         $data = $shipment->toArray();
         $this->httpClient->post($url, $data);
     }

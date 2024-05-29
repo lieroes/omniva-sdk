@@ -3,17 +3,19 @@
 namespace Lieroes\OmnivaSDK\Domain\Entities;
 
 use Lieroes\OmnivaSDK\Domain\Exception\InvalidShipmentException;
+use Lieroes\OmnivaSDK\Domain\ValueObjects\Addresee;
 use Lieroes\OmnivaSDK\Domain\ValueObjects\Address;
 use Lieroes\OmnivaSDK\Domain\ValueObjects\CustomerCode;
 use Lieroes\OmnivaSDK\Domain\Enums\MainService;
 use Lieroes\OmnivaSDK\Domain\Enums\DeliveryChannel;
 
-class Shipment {
+class Shipment
+{
     private CustomerCode $customerCode;
     private MainService $mainService;
     private DeliveryChannel $deliveryChannel;
-    private Address $receiverAddress;
-    private Address $senderAddress;
+    private Addresee $receiverAddressee;
+    private Addresee $senderAddressee;
     private ?string $partnerShipmentId;
     private ?string $shipmentComment;
     private bool $returnAllowed;
@@ -25,26 +27,27 @@ class Shipment {
     private ?array $customs;
 
     public function __construct(
-        CustomerCode $customerCode,
-        MainService $mainService,
+        CustomerCode    $customerCode,
+        MainService     $mainService,
         DeliveryChannel $deliveryChannel,
-        Address $receiverAddress,
-        Address $senderAddress,
-        ?string $partnerShipmentId = null,
-        ?string $shipmentComment = null,
-        bool $returnAllowed = false,
-        bool $paidByReceiver = false,
-        ?string $servicePackage = null,
-        ?int $allowedStoringPeriod = null,
-        ?array $notifications = null,
-        ?array $addServices = null,
-        ?array $customs = null
-    ) {
+        Addresee        $receiverAddressee,
+        Addresee        $senderAddressee,
+        ?string         $partnerShipmentId = null,
+        ?string         $shipmentComment = null,
+        bool            $returnAllowed = false,
+        bool            $paidByReceiver = false,
+        ?string         $servicePackage = null,
+        ?int            $allowedStoringPeriod = null,
+        ?array          $notifications = null,
+        ?array          $addServices = null,
+        ?array          $customs = null
+    )
+    {
         $this->validateFields(
             $mainService,
             $deliveryChannel,
-            $receiverAddress,
-            $senderAddress,
+            $receiverAddressee,
+            $senderAddressee,
             $partnerShipmentId,
             $servicePackage,
             $allowedStoringPeriod,
@@ -56,8 +59,8 @@ class Shipment {
         $this->customerCode = $customerCode;
         $this->mainService = $mainService;
         $this->deliveryChannel = $deliveryChannel;
-        $this->receiverAddress = $receiverAddress;
-        $this->senderAddress = $senderAddress;
+        $this->receiverAddress = $receiverAddressee;
+        $this->senderAddress = $senderAddressee;
         $this->partnerShipmentId = $partnerShipmentId;
         $this->shipmentComment = $shipmentComment;
         $this->returnAllowed = $returnAllowed;
@@ -70,19 +73,20 @@ class Shipment {
     }
 
     private function validateFields(
-        MainService $mainService,
+        MainService     $mainService,
         DeliveryChannel $deliveryChannel,
-        Address $receiverAddress,
-        Address $senderAddress,
-        ?string $partnerShipmentId,
-        ?string $servicePackage,
-        ?int $allowedStoringPeriod,
-        ?array $notifications,
-        ?array $addServices,
-        ?array $customs
-    ): void {
+        Addresee        $receiverAddressee,
+        Addresee        $senderAddressee,
+        ?string         $partnerShipmentId,
+        ?string         $servicePackage,
+        ?int            $allowedStoringPeriod,
+        ?array          $notifications,
+        ?array          $addServices,
+        ?array          $customs
+    ): void
+    {
         // Validate main service and delivery channel combinations
-//        if ($mainService === MainService::PARCEL && $deliveryChannel === DeliveryChannel::PARCEL_MACHINE && !$receiverAddress->getOffloadPostcode()) {
+//        if ($mainService === MainService::PARCEL && $deliveryChannel === DeliveryChannel::PARCEL_MACHINE && !$receiverAddressee->getOffloadPostcode()) {
 //            throw InvalidShipmentException::missingField("offloadPostcode");
 //        }
 
@@ -90,21 +94,21 @@ class Shipment {
             throw InvalidShipmentException::missingField("partnerShipmentId");
         }
 
-        if (!$receiverAddress->getCountry()) {
-            throw InvalidShipmentException::missingField("receiverAddress.country");
-        }
-
-        if (!$receiverAddress->getPostcode() && !$receiverAddress->getOffloadPostcode()) {
-            throw InvalidShipmentException::missingField("receiverAddress.postcode or receiverAddress.offloadPostcode");
-        }
-
-        if (!$senderAddress->getCountry()) {
-            throw InvalidShipmentException::missingField("senderAddress.country");
-        }
-
-        if (!$senderAddress->getPostcode()) {
-            throw InvalidShipmentException::missingField("senderAddress.postcode");
-        }
+//        if (!$receiverAddressee->getCountry()) {
+//            throw InvalidShipmentException::missingField("receiverAddress.country");
+//        }
+//
+//        if (!$receiverAddressee->getPostcode() && !$receiverAddressee->getOffloadPostcode()) {
+//            throw InvalidShipmentException::missingField("receiverAddress.postcode or receiverAddress.offloadPostcode");
+//        }
+//
+//        if (!$senderAddressee->getCountry()) {
+//            throw InvalidShipmentException::missingField("senderAddress.country");
+//        }
+//
+//        if (!$senderAddressee->getPostcode()) {
+//            throw InvalidShipmentException::missingField("senderAddress.postcode");
+//        }
 
         if (strlen($partnerShipmentId) > 30) {
             throw InvalidShipmentException::invalidValue("partnerShipmentId", "must be less than or equal to 30 characters");
@@ -162,65 +166,79 @@ class Shipment {
         }
     }
 
-    public function getCustomerCode(): CustomerCode {
+    public function getCustomerCode(): CustomerCode
+    {
         return $this->customerCode;
     }
 
-    public function getMainService(): MainService {
+    public function getMainService(): MainService
+    {
         return $this->mainService;
     }
 
-    public function getDeliveryChannel(): DeliveryChannel {
+    public function getDeliveryChannel(): DeliveryChannel
+    {
         return $this->deliveryChannel;
     }
 
-    public function getReceiverAddress(): Address {
+    public function getReceiverAddress(): Address
+    {
         return $this->receiverAddress;
     }
 
-    public function getSenderAddress(): Address {
+    public function getSenderAddress(): Address
+    {
         return $this->senderAddress;
     }
 
-    public function getPartnerShipmentId(): ?string {
+    public function getPartnerShipmentId(): ?string
+    {
         return $this->partnerShipmentId;
     }
 
-    public function getShipmentComment(): ?string {
+    public function getShipmentComment(): ?string
+    {
         return $this->shipmentComment;
     }
 
-    public function isReturnAllowed(): bool {
+    public function isReturnAllowed(): bool
+    {
         return $this->returnAllowed;
     }
 
-    public function isPaidByReceiver(): bool {
+    public function isPaidByReceiver(): bool
+    {
         return $this->paidByReceiver;
     }
 
-    public function getServicePackage(): ?string {
+    public function getServicePackage(): ?string
+    {
         return $this->servicePackage;
     }
 
-    public function getAllowedStoringPeriod(): ?int {
+    public function getAllowedStoringPeriod(): ?int
+    {
         return $this->allowedStoringPeriod;
     }
 
-    public function getNotifications(): ?array {
+    public function getNotifications(): ?array
+    {
         return $this->notifications;
     }
 
-    public function getAddServices(): ?array {
+    public function getAddServices(): ?array
+    {
         return $this->addServices;
     }
 
-    public function getCustoms(): ?array {
+    public function getCustoms(): ?array
+    {
         return $this->customs;
     }
 
-    public function toArray(): array {
-        return [
-            'customerCode' => $this->customerCode->getCode(),
+    public function toArray(): array
+    {
+        $data = array_filter([
             'mainService' => $this->mainService->value,
             'deliveryChannel' => $this->deliveryChannel->value,
             'receiverAddressee' => $this->receiverAddress->toArray(),
@@ -234,6 +252,13 @@ class Shipment {
             'notifications' => $this->notifications,
             'addServices' => $this->addServices,
             'customs' => $this->customs,
-        ];
+        ]);
+
+        return array_filter([
+            'customerCode' => $this->customerCode->getCode(),
+            'shipments' => [
+                $data
+            ]
+        ]);
     }
 }

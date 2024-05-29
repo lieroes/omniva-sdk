@@ -1,5 +1,8 @@
 # omniva-sdk
 
+Original documentation of Omniva
+https://www.omniva.lv/integrations_with_omniva
+
     use Lieroes\OmnivaSDK\Application\Services\ShipmentService;
     use Lieroes\OmnivaSDK\Domain\Entities\Shipment;
     use Lieroes\OmnivaSDK\Domain\Enums\DeliveryChannel;
