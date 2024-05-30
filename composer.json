@@ -15,7 +15,8 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.0",
         "symfony/http-foundation": "^5.0",
-        "monolog/monolog": "^2.0"
+        "monolog/monolog": "^2.0",
+        "phpunit/phpunit": "^9.5"
     },
     "extra": {
         "laravel": {

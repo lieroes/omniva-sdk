@@ -11,36 +11,21 @@ use Lieroes\OmnivaSDK\Domain\Enums\DeliveryChannel;
 
 class Shipment
 {
-    private CustomerCode $customerCode;
-    private MainService $mainService;
-    private DeliveryChannel $deliveryChannel;
-    private Addresee $receiverAddressee;
-    private Addresee $senderAddressee;
-    private ?string $partnerShipmentId;
-    private ?string $shipmentComment;
-    private bool $returnAllowed;
-    private bool $paidByReceiver;
-    private ?string $servicePackage;
-    private ?int $allowedStoringPeriod;
-    private ?array $notifications;
-    private ?array $addServices;
-    private ?array $customs;
-
     public function __construct(
-        CustomerCode    $customerCode,
-        MainService     $mainService,
-        DeliveryChannel $deliveryChannel,
-        Addresee        $receiverAddressee,
-        Addresee        $senderAddressee,
-        ?string         $partnerShipmentId = null,
-        ?string         $shipmentComment = null,
-        bool            $returnAllowed = false,
-        bool            $paidByReceiver = false,
-        ?string         $servicePackage = null,
-        ?int            $allowedStoringPeriod = null,
-        ?array          $notifications = null,
-        ?array          $addServices = null,
-        ?array          $customs = null
+        private CustomerCode    $customerCode,
+        private MainService     $mainService,
+        private DeliveryChannel $deliveryChannel,
+        private Addresee        $senderAddressee,
+        private Addresee        $receiverAddressee,
+        private ?string         $partnerShipmentId = null,
+        private ?string         $shipmentComment = null,
+        private bool            $returnAllowed = false,
+        private bool            $paidByReceiver = false,
+        private ?string         $servicePackage = null,
+        private ?int            $allowedStoringPeriod = null,
+        private ?array          $notifications = null,
+        private ?array          $addServices = null,
+        private ?array          $customs = null
     )
     {
         $this->validateFields(
@@ -55,21 +40,6 @@ class Shipment
             $addServices,
             $customs
         );
-
-        $this->customerCode = $customerCode;
-        $this->mainService = $mainService;
-        $this->deliveryChannel = $deliveryChannel;
-        $this->receiverAddress = $receiverAddressee;
-        $this->senderAddress = $senderAddressee;
-        $this->partnerShipmentId = $partnerShipmentId;
-        $this->shipmentComment = $shipmentComment;
-        $this->returnAllowed = $returnAllowed;
-        $this->paidByReceiver = $paidByReceiver;
-        $this->servicePackage = $servicePackage;
-        $this->allowedStoringPeriod = $allowedStoringPeriod;
-        $this->notifications = $notifications;
-        $this->addServices = $addServices;
-        $this->customs = $customs;
     }
 
     private function validateFields(
@@ -85,30 +55,29 @@ class Shipment
         ?array          $customs
     ): void
     {
-        // Validate main service and delivery channel combinations
-//        if ($mainService === MainService::PARCEL && $deliveryChannel === DeliveryChannel::PARCEL_MACHINE && !$receiverAddressee->getOffloadPostcode()) {
-//            throw InvalidShipmentException::missingField("offloadPostcode");
-//        }
+        if ($mainService === MainService::PARCEL && $deliveryChannel === DeliveryChannel::PARCEL_MACHINE && !$receiverAddressee->getAddress()->getOffloadPostcode()) {
+            throw InvalidShipmentException::missingField("offloadPostcode");
+        }
 
         if ($mainService === MainService::LETTER && !$partnerShipmentId) {
             throw InvalidShipmentException::missingField("partnerShipmentId");
         }
 
-//        if (!$receiverAddressee->getCountry()) {
-//            throw InvalidShipmentException::missingField("receiverAddress.country");
-//        }
-//
-//        if (!$receiverAddressee->getPostcode() && !$receiverAddressee->getOffloadPostcode()) {
-//            throw InvalidShipmentException::missingField("receiverAddress.postcode or receiverAddress.offloadPostcode");
-//        }
-//
-//        if (!$senderAddressee->getCountry()) {
-//            throw InvalidShipmentException::missingField("senderAddress.country");
-//        }
-//
-//        if (!$senderAddressee->getPostcode()) {
-//            throw InvalidShipmentException::missingField("senderAddress.postcode");
-//        }
+        if (!$receiverAddressee->getAddress()->getCountry()) {
+            throw InvalidShipmentException::missingField("receiverAddress.country");
+        }
+
+        if (!$receiverAddressee->getAddress()->getPostcode() && !$receiverAddressee->getAddress()->getOffloadPostcode()) {
+            throw InvalidShipmentException::missingField("receiverAddressee.postcode or receiverAddressee.offloadPostcode");
+        }
+
+        if (!$senderAddressee->getAddress()->getCountry()) {
+            throw InvalidShipmentException::missingField("senderAddress.country");
+        }
+
+        if (!$this->senderAddressee->getAddress()->getPostcode()) {
+            throw InvalidShipmentException::missingField("senderAddress.postcode");
+        }
 
         if (strlen($partnerShipmentId) > 30) {
             throw InvalidShipmentException::invalidValue("partnerShipmentId", "must be less than or equal to 30 characters");
@@ -241,14 +210,14 @@ class Shipment
         $data = array_filter([
             'mainService' => $this->mainService->value,
             'deliveryChannel' => $this->deliveryChannel->value,
-            'receiverAddressee' => $this->receiverAddress->toArray(),
-            'senderAddressee' => $this->senderAddress->toArray(),
             'partnerShipmentId' => $this->partnerShipmentId,
             'shipmentComment' => $this->shipmentComment,
             'returnAllowed' => $this->returnAllowed,
             'paidByReceiver' => $this->paidByReceiver,
             'servicePackage' => $this->servicePackage,
             'allowedStoringPeriod' => $this->allowedStoringPeriod,
+            'senderAddressee' => $this->senderAddressee->toArray(),
+            'receiverAddressee' => $this->receiverAddressee->toArray(),
             'notifications' => $this->notifications,
             'addServices' => $this->addServices,
             'customs' => $this->customs,

@@ -6,7 +6,7 @@ class Address
 {
     public function __construct(
         private string  $country,
-        private ?string  $postcode,
+        private ?string $postcode = null,
         private ?string $deliveryPoint = null,
         private ?string $street = null,
         private ?string $houseNo = null,
@@ -21,7 +21,7 @@ class Address
         return $this->country;
     }
 
-    public function getPostcode(): string
+    public function getPostcode(): ?string
     {
         return $this->postcode;
     }
@@ -55,7 +55,7 @@ class Address
     {
         return array_filter([
             'country' => $this->country,
-            'deliveryoint' => $this->deliveryPoint,
+            'deliverypoint' => $this->deliveryPoint,
             'postcode' => $this->postcode,
             'street' => $this->street,
             'houseNo' => $this->houseNo,
