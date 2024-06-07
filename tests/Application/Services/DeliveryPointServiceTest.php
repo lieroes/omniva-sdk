@@ -3,9 +3,9 @@
 namespace Lieroes\OmnivaSDK\Tests\Application\Services;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\RequestException;
-use Lieroes\OmnivaSDK\Application\DTOs\DeliveryPointDTO;
+use GuzzleHttp\Psr7\Response;
+use Lieroes\OmnivaSDK\Application\DTOs\DeliveryPoints\DeliveryPointDTO;
 use Lieroes\OmnivaSDK\Application\Services\DeliveryPointService;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
