@@ -1,5 +1,7 @@
 {
     "name": "lieroes/omniva-sdk",
+    "type": "library",
+    "licence": "MIT",
     "autoload": {
         "psr-4": {
             "Lieroes\\OmnivaSdk\\": "src/"
