@@ -22,10 +22,12 @@ class OmnivaHttpClient
     {
         $this->logger->info('Sending POST request', ['url' => $url, 'data' => $data]);
 
-//        try {
+        try {
             $response = $this->client->post($url, [
                 'auth' => [$this->username, $this->password],
-                'headers' => [],
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
                 'json' => $data
             ]);
 
@@ -34,9 +36,9 @@ class OmnivaHttpClient
             $this->logger->info('Received response', ['response' => $responseData]);
 
             return $responseData;
-//        } catch (GuzzleException $e) {
-//            $this->logger->error('Error communicating with Omniva API', ['error' => $e->getMessage()]);
-//            throw new \Exception("Error communicating with Omniva API: " . $e->getMessage());
-//        }
+        } catch (GuzzleException $e) {
+            $this->logger->error('Error communicating with Omniva API', ['error' => $e->getMessage()]);
+            throw new \Exception("Error communicating with Omniva API: " . $e->getMessage());
+        }
     }
 }

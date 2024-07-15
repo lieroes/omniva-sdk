@@ -2,7 +2,7 @@
 
 namespace Lieroes\OmnivaSDK\Application\Mappers;
 
-use Lieroes\OmnivaSDK\Application\DTOs\DeliveryPointDTO;
+use Lieroes\OmnivaSDK\Application\DTOs\DeliveryPoints\DeliveryPointDTO;
 use Lieroes\OmnivaSDK\Domain\Enums\DeliveryPointType;
 
 class DeliveryPointMapper
